@@ -1,11 +1,12 @@
 [package]
 name = "mpmc-bus"
 version = "0.1.0"
+description = "Wrapper around bus to provide mp functionality."
 authors = ["Luke Frisken <l.frisken@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-crossbeam-channel = "0.4"
+crossbeam-channel = "0.5"
 bus = "2.2"
