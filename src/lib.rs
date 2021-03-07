@@ -1,7 +1,12 @@
+pub use bus::BusIter;
 use bus::BusReader;
 use crossbeam_channel::SendError;
-use std::{cell::RefCell, sync::{Arc, Mutex}, thread, time::Duration};
-pub use bus::BusIter;
+use std::{
+    cell::RefCell,
+    sync::{Arc, Mutex},
+    thread,
+    time::Duration,
+};
 
 pub struct Bus<T> {
     bus: Arc<Mutex<RefCell<bus::Bus<T>>>>,
@@ -120,7 +125,8 @@ mod tests {
             atomic::{AtomicU32, Ordering},
             Arc,
         },
-        thread, time::Duration,
+        thread,
+        time::Duration,
     };
 
     #[test]
@@ -159,14 +165,14 @@ mod tests {
         let thread_result1 = result1.clone();
         let thread_result3 = result3.clone();
         let join_handle1 = thread::spawn(move || {
-            let join_handle3 = thread::spawn(move || {
-                loop {
-                    let message = rx3.recv_timeout(Duration::from_millis(1000)).expect("thread3 did not receive any messages");
-                    match message {
-                        100 => break,
-                        _ => {
-                            thread_result3.store(message * 3, Ordering::SeqCst);
-                        }
+            let join_handle3 = thread::spawn(move || loop {
+                let message = rx3
+                    .recv_timeout(Duration::from_millis(1000))
+                    .expect("thread3 did not receive any messages");
+                match message {
+                    100 => break,
+                    _ => {
+                        thread_result3.store(message * 3, Ordering::SeqCst);
                     }
                 }
             });
